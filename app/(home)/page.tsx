@@ -19,6 +19,8 @@ export interface Users {
 export default function Home() {
   const [users, setUsers] = useState<Users[]>([]);
   const [showSooner, setShowSooner] = useState(false);
+  const [filteredUsers, setFilteredUsers] = useState<Users[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const findUsers = async () => {
@@ -26,6 +28,7 @@ export default function Home() {
         .get("https://api-user-base.onrender.com/users")
         .then((response) => {
           setUsers(response.data);
+          setFilteredUsers(response.data);
         });
     };
 
@@ -42,6 +45,15 @@ export default function Home() {
     }
   }, [showSooner]);
 
+  useEffect(() => {
+    const results = users.filter((user) =>
+      `${user.firstName} ${user.lastName}`
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()),
+    );
+    setFilteredUsers(results);
+  }, [searchQuery, users]);
+
   return (
     <main className="flex min-h-screen w-full flex-col items-center justify-center gap-10 bg-[#333333] p-5 text-white md:p-20 lg:flex-row">
       <section className="relative flex w-full flex-col items-center justify-center xl:w-fit">
@@ -49,14 +61,15 @@ export default function Home() {
       </section>
 
       <section className="flex w-full flex-col gap-2.5 lg:max-w-80">
-        <Search />
+        <Search setSearchQuery={setSearchQuery} />
 
         <div className="flex w-full flex-col gap-2.5 overflow-auto lg:h-[444px] [&::-webkit-scrollbar]:hidden">
           <h3 className="text-lg">
-            Usuários <span className="opacity-50">({users.length})</span>
+            Usuários{" "}
+            <span className="opacity-50">({filteredUsers.length})</span>
           </h3>
 
-          {users
+          {filteredUsers
             .slice()
             .reverse()
             .map((user) => (
