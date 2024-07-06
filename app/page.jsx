@@ -45,7 +45,7 @@ const Home = () => {
   };
 
   return (
-    <main className="flex min-h-screen w-full flex-col items-center bg-container xl:flex-row xl:items-start xl:justify-end xl:px-56 xl:py-20 2xl:px-80">
+    <main className="flex min-h-screen w-full flex-col items-center xl:flex-row xl:items-start xl:justify-end xl:px-56 xl:py-20 2xl:px-80">
       <section className="left-0 top-1/2 flex w-full flex-col items-center gap-10 p-5 md:max-w-[600px] xl:fixed xl:ml-56 xl:max-w-96 xl:-translate-y-1/2 xl:transform 2xl:ml-80">
         <div className="flex flex-col gap-1 text-center">
           <h3 className="text-2xl font-medium capitalize text-primary">
@@ -74,6 +74,7 @@ const Home = () => {
             email={user.email}
             location={user.location}
             created_at={user.created_at}
+            index={index}
           />
         ))}
       </section>
