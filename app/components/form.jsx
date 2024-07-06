@@ -44,10 +44,12 @@ const Form = () => {
       location: data.location,
     };
 
-    await axios.post("http://localhost:3333/user", formData).then(() => {
-      reset();
-      alert("Cadastrado com sucesso!");
-    });
+    await axios
+      .post("https://api-user-base.onrender.com/user", formData)
+      .then(() => {
+        reset();
+        alert("Cadastrado com sucesso!");
+      });
   };
 
   return (

@@ -14,10 +14,12 @@ const Home = () => {
   }, []);
 
   const findAllUsers = async () => {
-    await axios.get("http://localhost:3333/users").then((response) => {
-      setUsers(response.data);
-      console.log(response.data);
-    });
+    await axios
+      .get("https://api-user-base.onrender.com/users")
+      .then((response) => {
+        setUsers(response.data);
+        console.log(response.data);
+      });
   };
 
   return (
