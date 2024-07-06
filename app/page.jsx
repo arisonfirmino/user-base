@@ -8,18 +8,40 @@ import axios from "axios";
 
 const Home = () => {
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     findAllUsers();
   }, []);
+
+  useEffect(() => {
+    if (search === "") {
+      setFilteredUsers(users);
+    } else {
+      setFilteredUsers(
+        users.filter(
+          (user) =>
+            user.name.toLowerCase().includes(search.toLowerCase()) ||
+            user.lastName.toLowerCase().includes(search.toLowerCase()) ||
+            user.email.toLowerCase().includes(search.toLowerCase()),
+        ),
+      );
+    }
+  }, [search, users]);
 
   const findAllUsers = async () => {
     await axios
       .get("https://api-user-base.onrender.com/users")
       .then((response) => {
         setUsers(response.data);
+        setFilteredUsers(response.data);
         console.log(response.data);
       });
+  };
+
+  const handleSearch = (event) => {
+    setSearch(event.target.value);
   };
 
   return (
@@ -38,13 +60,13 @@ const Home = () => {
       </section>
 
       <section className="flex w-full flex-col gap-5 p-5 md:max-w-[600px] xl:max-w-96">
-        <Search />
+        <Search handleSearch={handleSearch} />
 
         <p className="text-xl text-primary">
           Usuários <span className="text-gray-400">({users.length})</span>
         </p>
 
-        {users.map((user, index) => (
+        {filteredUsers.map((user, index) => (
           <User
             key={user.id}
             name={user.name}
