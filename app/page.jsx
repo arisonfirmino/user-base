@@ -5,11 +5,13 @@ import Form from "./components/form";
 import Search from "./components/search";
 import User from "./components/user";
 import axios from "axios";
+import Sooner from "./components/sooner";
 
 const Home = () => {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [search, setSearch] = useState("");
+  const [showSooner, setShowSooner] = useState(false);
 
   useEffect(() => {
     findAllUsers();
@@ -29,6 +31,16 @@ const Home = () => {
       );
     }
   }, [search, users]);
+
+  useEffect(() => {
+    if (showSooner) {
+      const timer = setTimeout(() => {
+        setShowSooner(false);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showSooner]);
 
   const findAllUsers = async () => {
     await axios
@@ -56,7 +68,7 @@ const Home = () => {
           </p>
         </div>
 
-        <Form />
+        <Form findAllUsers={findAllUsers} setShowSooner={setShowSooner} />
       </section>
 
       <section className="flex w-full flex-col gap-5 p-5 md:max-w-[600px] xl:max-w-96">
@@ -78,6 +90,8 @@ const Home = () => {
           />
         ))}
       </section>
+
+      {showSooner && <Sooner />}
     </main>
   );
 };

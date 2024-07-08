@@ -26,7 +26,7 @@ const schema = yup.object({
     .min(3, "Este campo requer no mínimo 3 caracteres."),
 });
 
-const Form = () => {
+const Form = ({ findAllUsers, setShowSooner }) => {
   const {
     register,
     handleSubmit,
@@ -48,7 +48,8 @@ const Form = () => {
       .post("https://api-user-base.onrender.com/user", formData)
       .then(() => {
         reset();
-        alert("Cadastrado com sucesso!");
+        findAllUsers();
+        setShowSooner(true);
       });
   };
 
